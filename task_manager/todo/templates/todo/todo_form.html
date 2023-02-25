@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    <h1 class="text-center">Todo App</h1>
+
+    <div class="content">
+        <form method="post" class="form-group py-4">
+            {% csrf_token %}
+            <fieldset class="from-control py-2">
+                {{ form|crispy }}
+            </fieldset>
+            <button class="btn btn-outline-primary py-2">Submit</button>
+        </form>
+    </div>   
+        
+{% endblock %}

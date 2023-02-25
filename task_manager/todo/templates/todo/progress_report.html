@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <h1 class="text-center mt-5">Progress Report</h1>
+        <hr>
+        <div id="task-chart"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Create chart data from task data
+    var taskData = JSON.parse('{{ task_data|safe }}');
+    var chartData = [];
+    for (var i = 0; i < taskData.length; i++) {
+      var dataPoint = {
+        day: taskData[i].day,
+        completed: taskData[i].completed,
+        not_completed: taskData[i].not_completed
+      };
+      chartData.push(dataPoint);
+    }
+
+    // Create chart using C3.js
+    var chart = c3.generate({
+      bindto: '#task-chart',
+      data: {
+        json: chartData,
+        keys: {
+          x: 'day',
+          value: ['completed', 'not_completed']
+        },
+        type: 'bar'
+      },
+      axis: {
+        x: {
+          type: 'timeseries',
+          tick: {
+            format: '%Y-%m-%d'
+          }
+        },
+        y: {
+          label: {
+            text: 'Number of Tasks',
+            position: 'outer-middle'
+          }
+        }
+      },
+      legend: {
+        position: 'bottom'
+      }
+    });
+  </script>
+{% endblock %}
